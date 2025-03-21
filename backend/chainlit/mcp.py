@@ -36,7 +36,7 @@ def validate_mcp_command(command_string: str):
             - args_list (list): List of command arguments
 
     Raises:
-        ValueError: If the command doesn't use 'npx' or 'uvx' as the executable
+        ValueError: If the command doesn't use ['npx', 'uvx', 'docker'] as the executable
     """
     # Split the command string into parts
     parts = command_string.strip().split()
@@ -58,9 +58,13 @@ def validate_mcp_command(command_string: str):
             executable = "uvx"
             executable_index = i
             break
+        if base_exec == "docker":
+            executable = "docker"
+            executable_index = i
+            break
 
     if executable is None or executable_index is None:
-        raise ValueError("Only 'npx' or 'uvx' commands are allowed")
+        raise ValueError("Only ['npx', 'uvx', 'docker'] commands are allowed")
 
     # Return 'npx' as the executable and everything after it as args
     args_list = parts[executable_index + 1 :]
